@@ -9,6 +9,10 @@ This project is an image compression tool that allows users to optimize their im
 - Display of optimization progress and results.
 - Simple and intuitive graphical user interface.
 
+## Downloads
+
+- **Download the Latest Version**: Visit the [releases page](https://github.com/Emy69/Image-Compressor/releases) to download the latest version of the application.
+
 ### Installation
 
 #### Prerequisites
