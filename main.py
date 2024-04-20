@@ -122,3 +122,4 @@ label_resultado.grid(row=3, column=0, sticky=W+E, padx=10)
 if __name__ == "__main__":
     # Iniciar GUI
     root.mainloop()
+ 
