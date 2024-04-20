@@ -17,4 +17,7 @@ This project is an image compression tool that allows users to optimize their im
 #### Setup
 Clone this repository and navigate into the project directory. Install the required dependencies with:
 ```bash
+https://github.com/Emy69/Image-Compressor.git
+```
+```bash
 pip install -r requirements.txt
