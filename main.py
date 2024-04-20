@@ -15,7 +15,7 @@ def calcular_calidad(size_original):
         return 70
     elif size_original > 100 * 1024:
         return 40
-    else:
+    else: 
         return 65
 
 def cargar_imagenes():
