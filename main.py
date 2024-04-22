@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from tkinter import filedialog, ttk, N, S, E, W, font as tkFont
+from tkinter import filedialog, ttk, N, S, E, W, font as tkFont, Label
 from tkinter import IntVar
 from PIL import Image
 import os
@@ -74,51 +74,12 @@ def cargar_imagenes():
             root.after(0, lambda: label_resultado.configure(text="No optimization needed"))
 
     def update_gui(nombre_archivo, optimizacion, index):
-        tree.insert("", "end", text=nombre_archivo, values=(f"{optimizacion:.2f}% optimized", "Completed"))
+        item = tree.insert("", "end", text=nombre_archivo, values=(f"{optimizacion:.2f}% optimized", "Completed"))
         imagenes_completadas.set(index + 1)
+        tree.see(item)
 
     threading.Thread(target=process_images).start()
 
-# Configuración de la ventana principal usando customtkinter
-root = ctk.CTk()
-root.title("Image Compressor")
-root.geometry("800x600")
-
-# Variables de estado
-total_imagenes = IntVar(value=0)
-imagenes_completadas = IntVar(value=0)
-
-# Configurar fuentes
-default_font = tkFont.nametofont("TkDefaultFont")
-default_font.configure(size=12)
-root.option_add("*Font", default_font)
-
-# Configurar grid
-root.grid_columnconfigure(0, weight=1)
-root.grid_rowconfigure(1, weight=1)
-
-root.iconbitmap("resources/img/window.ico") 
-
-# Widgets usando customtkinter
-boton_cargar = ctk.CTkButton(root, text="Upload Images", command=cargar_imagenes)
-boton_cargar.grid(row=0, column=0, pady=10, padx=10, sticky=N+E+W)
-
-# Configurar Treeview para listado de archivos con estado de progreso
-columns = ("Status", "Progress")
-tree = ttk.Treeview(root, columns=columns, show="tree headings")
-tree.column("#0", width=300)
-tree.heading("#0", text="File")
-tree.column("Status", width=150)
-tree.heading("Status", text="Status")
-tree.column("Progress", width=150)
-tree.heading("Progress", text="Progress")
-tree.grid(row=1, column=0, sticky=N+S+E+W)
-
-label_total = ctk.CTkLabel(root, textvariable=imagenes_completadas)
-label_total.grid(row=2, column=0, sticky=W+E, padx=10)
-
-label_resultado = ctk.CTkLabel(root, text="")
-label_resultado.grid(row=3, column=0, sticky=W+E, padx=10)
 
 # Configuración de la ventana principal usando customtkinter
 root = ctk.CTk()
