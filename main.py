@@ -1,10 +1,10 @@
 import customtkinter as ctk
-from tkinter import filedialog, ttk, N, S, E, W, font as tkFont, Label
-from tkinter import IntVar
+from tkinter import filedialog, ttk, N, S, E, W, font as tkFont, Label, IntVar
 from PIL import Image
 import os
 import threading
 import shutil
+from concurrent.futures import ThreadPoolExecutor
 
 def calcular_calidad(size_original):
     thresholds = [(2 * 1024 * 1024, 45), (1024 * 1024, 60), (512 * 1024, 70), (100 * 1024, 40)]
@@ -28,34 +28,38 @@ def process_image(ruta, calidad):
     formato = img.format
     nombre_archivo = os.path.basename(ruta)
     size_original = os.path.getsize(ruta)
-
-    if size_original <= 100 * 1024:  # Copy instead of optimizing if smaller than 100 KB
+    if size_original <= 100 * 1024:
         shutil.copy(ruta, f'optimized/{nombre_archivo}')
-        return size_original, 0  # No optimization
-
+        return size_original, 0
     opciones_guardado = get_save_options(formato, calidad)
     ruta_optimizada = f'optimized/{nombre_archivo}'
     img.save(ruta_optimizada, formato, **opciones_guardado)
     size_nuevo = os.path.getsize(ruta_optimizada)
-
     if size_nuevo > size_original:
         shutil.copy(ruta, ruta_optimizada)
         size_nuevo = size_original
-
     return size_nuevo, 100 - (size_nuevo / size_original * 100)
 
 def cargar_imagenes():
+    # Abre un diálogo para seleccionar archivos de imagen con los tipos especificados
     rutas_imagenes = filedialog.askopenfilenames(title="Select images", filetypes=[("Image files", "*.jpg *.jpeg *.png *.bmp *.gif")])
+    
+    # Si no se seleccionan imágenes, la función termina prematuramente
     if not rutas_imagenes:
         return
 
+    # Establece el total de imágenes seleccionadas en una variable de control de la interfaz
     total_imagenes.set(len(rutas_imagenes))
-    imagenes_completadas.set(0)
+    imagenes_completadas.set(0)  # Inicializa el contador de imágenes procesadas
+    
+    # Variables para acumular el tamaño original y optimizado de las imágenes
     total_size_original = 0
     total_size_optimized = 0
-
+    
+    # Asegura que el directorio 'optimized' existe para guardar las imágenes procesadas
     os.makedirs('optimized', exist_ok=True)
-
+    
+    # Función interna para procesar las imágenes
     def process_images():
         nonlocal total_size_original, total_size_optimized
         for index, ruta in enumerate(rutas_imagenes):
@@ -64,8 +68,10 @@ def cargar_imagenes():
             total_size_original += os.path.getsize(ruta)
             total_size_optimized += size_nuevo
 
+            # Actualiza la interfaz de usuario después de cada imagen procesada
             root.after(0, lambda ruta=ruta, optimizacion=optimizacion: update_gui(ruta, optimizacion, index))
 
+        # Al final del procesamiento, actualiza la interfaz con el resultado final
         if total_size_original > 0:
             total_optimizado_mb = (total_size_original - total_size_optimized) / (1024 * 1024)
             total_optimizado_percent = (total_size_original - total_size_optimized) / total_size_original * 100
@@ -73,11 +79,13 @@ def cargar_imagenes():
         else:
             root.after(0, lambda: label_resultado.configure(text="No optimization needed"))
 
+    # Función interna para actualizar la interfaz de usuario
     def update_gui(nombre_archivo, optimizacion, index):
         item = tree.insert("", "end", text=nombre_archivo, values=(f"{optimizacion:.2f}% optimized", "Completed"))
         imagenes_completadas.set(index + 1)
         tree.see(item)
 
+    # Inicia un nuevo hilo para procesar las imágenes
     threading.Thread(target=process_images).start()
 
 
