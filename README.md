@@ -9,6 +9,33 @@ This project is an image compression tool that allows users to optimize their im
 - Display of optimization progress and results.
 - Simple and intuitive graphical user interface.
 
+## Compression Example
+
+Below is a visual comparison between an original image and its compressed version using our Image Compressor. The example demonstrates the effectiveness of the compression with minimal loss of quality.
+
+<table>
+  <tr>
+    <th>Original Image</th>
+    <th>Compressed Image</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="path/to/original/image.jpg" alt="Original Image" width="300"/>
+      <br>
+      Size: 2.4 MB
+    </td>
+    <td>
+      <img src="path/to/compressed/image.jpg" alt="Compressed Image" width="300"/>
+      <br>
+      Size: 1.2 MB
+    </td>
+  </tr>
+</table>
+
+As shown in the table above, the compressed version retains substantial visual quality while significantly reducing the file size. This example used a compression setting that balances quality with file size reduction.
+
+
+
 ## Running the Application
 
 Follow these steps to optimize your images:
