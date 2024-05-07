@@ -20,14 +20,14 @@ Below is a visual comparison between an original image and its compressed versio
   </tr>
   <tr>
     <td>
-      <img src="path/to/original/image.jpg" alt="Original Image" width="300"/>
+      <img src="https://github.com/Emy69/Image-Compressor/blob/main/resources/Example/Original.png" alt="Original Image" width="300"/>
       <br>
-      Size: 2.4 MB
+      Size: 1.35 MB
     </td>
     <td>
-      <img src="path/to/compressed/image.jpg" alt="Compressed Image" width="300"/>
+      <img src="https://github.com/Emy69/Image-Compressor/blob/main/resources/Example/Compressed.png" alt="Compressed Image" width="300"/>
       <br>
-      Size: 1.2 MB
+      Size: 0.98 MB
     </td>
   </tr>
 </table>
