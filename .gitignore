@@ -1,3 +1,6 @@
 venv/
 setup.py
 optimized
+__pycache__/
+*.py[cod]
+*.pyc
